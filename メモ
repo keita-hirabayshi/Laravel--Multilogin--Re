@@ -1,0 +1,100 @@
+.envファイルの更新
+正常に更新されない場合は、以下のコマンドを実行
+sail artisan config:clear       環境ファイルをクリア
+sail artisan cache:clear       アプリ側のキャッシュをクリア
+sail compose にてcomposeメソッドは使用可能 (頭にsailをつければ、phpメソッドの代わりとなる事が多い)
+npm インストールによって、lalavel breezeにて必要なパッケージが追加でインストールされる
+
+CSS
+tailwind : bootstrapに代わるフレームワークで、bootstrapと比べ微調整などがしやすい・レスポンシブ対応など特徴を持つ
+tailwindは容量が多いことから、必要ない機能を削除するパーズという機能がある
+
+tailのversion3のポイント
+・Just-In-Time機能  必要なものを必要な時に必要なだけ出力する機能
+使用にあたってはターミナルを3画面起動すると見やすい
+
+モバイルファースト  実装にあたり携帯の画面サイズを基準にデザインを調整する考え方
+
+Bladeコンポーネント
+コントローラーの代わりに、DBとデータのやり取りや変数の受け渡し等を行う(controllerは viewを返すのみで、負担を軽くする役割も担う)
+HTMLの要素1つ1つを部品として組み入れていくイメージ
+slot
+componentファイルにて複数のスロット(headerやslot)を使用している場合は、名前付きスロットにて指定する <x-slot name='header'>
+
+高速な開発環境を提供してくれる、コードを本番用に構築するフロントエンド側のビルドツール(最新はvite  旧はmix。Laravelではcssとjavasecriptの本番用のアセット構築)
+使い方
+フロント側   sail npm run devにてフロントサーバー側を構築する(viteはあくまでもフロント側のツール)
+バックエンド sail artisan serveにてバックエンドを起動(php側でも作業するので、こちらも必要)
+両方行うことで、正常に処理される
+
+クラスベースのコンポーネントの流れ
+<x-test-class-base />  にてコンポーネントクラス(app/view/component)が読み込まれ、そのなかのrenderメソッドに記載のbladeファイル(component)が呼び出される
+
+Alpine.jsとは
+tailwindのjavascript版のようなもの
+
+サービスコンテナ
+いろいろなサービスを入れておくための箱
+登録方法
+
+laravel読み込みの流れ
+1. public/index.phpにリダイレクトする
+2. aoutoloadの読み込み
+3. サービスコンテナ生成
+4. httpkernelインスタンス作成
+5. httpカーネルがリクエストを処理して、レスポンスを取得
+6. レスポンスを送信
+7. terminateで片付け
+
+サービスプロバイダーを使うことで、デフォルトで作成してあるメソッドを簡単に使用できる
+流れ
+ターミナルにてプロバイダーを作成「sail artisan make:provider プロバイダー名」
+config/app ファイル内に新規で作成した、プロバイダーを登録する   (これにより、自動でサービスコンテナに登録される)
+あとは、呼び出して使用可能
+
+
+
+
+アプリケーションの作成
+routeserviceproviderに使用したいパスを事前に登録する(今回はuserとownerとadmin)
+
+routeserviceproviderの設定(app/RouteServiceProvider)
+
+Laravelの認証機能の設定(/config/auth)
+    Guard       リクエストごとにユーザー認証する方法を定義する
+    プロバイダー   認証されたユーザー情報を取得する方法を定義する
+    *ガードが実際に何をやっているのかは微妙
+
+Middlewareの設定(authenticated,redirectifauthenticated)
+    ログイン済みユーザーがアクセスしてきたらリダイレクト処理する    
+        guard設定対象であるか？また、認証されているか？ アクセスがあったurlが指定のurlか？ (ここでは、user,owner,admin)
+
+リクエストクラスの設定(HTTP/request/Auth/loginrequest)
+    登録済みのguardから、適切なパスワード・メール情報が送信されてきた場合のみ認証を許可する
+
+    認証に関わる部分
+    config/auth
+
+コントローラーなどの設定
+    user,owner,adminのそれぞれのコントローラーを作成する
+        controllerを修正する(上記のフォルダ内の全ファイル)
+
+ビューの追加
+    resources/views/users,admin,owners
+
+検索  command + F
+
+middleware(authenticate.php)
+
+＊エラーが発生したが、原因の特定が困難だったため新規でプロジェクト「laravel-multi2」を作成
+ 修正中
+ ・Routeserviceprovider.php のRoute:middleware('web')の部分
+    asメソッドの追加
+ ・middleware(redirectifauthenticated routeIsの設定)
+
+ ・コントローラーの修正(/routeのowner.php admin.php web.php)
+  46.コントローラー追加修正
+  passwordcontrollerだけない
+
+適用していない箇所「45.リクエストクラス」
+authenticateメソッドの  :voidの解除
