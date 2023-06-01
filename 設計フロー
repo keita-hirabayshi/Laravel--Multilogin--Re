@@ -14,3 +14,4 @@
 .envファイルのAPP_NAMEにて登録。参照時は config/app.phpファイルから
 ロゴ
 ・保存箇所は strage/public フォルダ(ただし、「sail artisan storage:link を実行し、外側からアクセスできるようにする必要がある」)
+   public/images/logo.png → 正常に保存      storage/public/logo.png → gitHugに保存されない
