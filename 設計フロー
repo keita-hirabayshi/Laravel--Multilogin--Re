@@ -15,3 +15,12 @@
 ロゴ
 ・保存箇所は strage/public フォルダ(ただし、「sail artisan storage:link を実行し、外側からアクセスできるようにする必要がある」)
    public/images/logo.png → 正常に保存      storage/public/logo.png → gitHugに保存されない
+シーダー(ダミーデータ)
+    seederファイルを作成する(sail artisan make:seeder)
+    ファイル内でDB,HASHをuseで読み込み、ダミーデータを入力(作成したシーダーファイル内)
+    DatabaseSeeder.phpで追加したseederを読み込む
+    refreshコマンドと組み合わせてテーブルデータを削除しつつ、登録することも可能(php artisan migrate:fresh --seed)
+データの扱い方
+    クエリービルダ・
+Carbon
+    日付関連の表示など
