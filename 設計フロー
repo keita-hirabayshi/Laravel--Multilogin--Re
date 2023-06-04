@@ -21,6 +21,8 @@
     DatabaseSeeder.phpで追加したseederを読み込む
     refreshコマンドと組み合わせてテーブルデータを削除しつつ、登録することも可能(php artisan migrate:fresh --seed)
 データの扱い方
-    クエリービルダ・
+    クエリービルダ・(ownercontroller)
 Carbon
-    日付関連の表示など
+    日付関連の表示など(ownercontroller)
+
+    tailblocks(取得したデータをきれいに整える)
