@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use App\Models\Owner; //Eloquent エロクアント
 use Illuminate\Support\Facades\DB; //クエリービルダ
@@ -56,15 +58,44 @@ class OwnersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255','unique:owners'],
+            'email' => ['required', 'string', 'email', 'max:255','unique:owners'],
+            'password' => ['required', 'confirmed','min:8']
+            // 'password' => ['required', 'confirmed',Rules\Password::defaults()]
+        ]);
+
+        Owner::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+        
+
+        return redirect()
+        ->route('admin.owners.index')
+        ->with('message','オーナー登録を実施しました。');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255','unique:owners'],
+            'password' => ['required', 'confirmed']
+        ]);
+        
+            echo $request->name;
+        // Owner::create([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'password' => Hash::make($request->password),
+        // ]);
+
+        // return redirect()->route('admin.owners.index');
     }
 
     /**

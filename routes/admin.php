@@ -28,6 +28,7 @@ Route::get('/', function () {
     return view('admin.welcome');
 });
 
+// /admin/ownersはこちらへ飛ばされる
 Route::resource('owners', OwnersController::class)
 ->middleware('auth:admin');
 

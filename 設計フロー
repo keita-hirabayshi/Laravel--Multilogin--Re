@@ -26,3 +26,6 @@ Carbon
     日付関連の表示など(ownercontroller)
 
     tailblocks(取得したデータをきれいに整える)
+        一覧画面、create画面の作成
+バリデーションの設定
+フラッシュメッセージ
