@@ -101,5 +101,4 @@ middleware(authenticate.php)
 適用していない箇所「45.リクエストクラス」
 authenticateメソッドの  :voidの解除
 
-保留
-5-61 フラッシュメッセージが表示されない
+
