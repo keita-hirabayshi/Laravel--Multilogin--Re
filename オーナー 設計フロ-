@@ -1,0 +1,3 @@
+外部キー制約
+    migrationファイルの作成、seederの作成、DatabaseSeederへの登録
+リレーションの設定
