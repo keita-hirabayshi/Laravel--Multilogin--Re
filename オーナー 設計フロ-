@@ -1,3 +1,6 @@
 外部キー制約
     migrationファイルの作成、seederの作成、DatabaseSeederへの登録
 リレーションの設定
+    $this->hasOne() or  $this->belongTo で結合させる
+データの削除(FK付)
+    外部キー制約がある場合は、migrationファイルにて「cascade」処理を実行する必要がある

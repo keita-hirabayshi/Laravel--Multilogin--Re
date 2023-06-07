@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use App\Models\Owner; //Eloquent エロクアント
+use App\Models\Shop; //Eloquent エロクアント
 use Illuminate\Support\Facades\DB; //クエリービルダ
 use Carbon\Carbon;
+use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class OwnersController extends Controller
 {
@@ -66,12 +69,32 @@ class OwnersController extends Controller
             // 'password' => ['required', 'confirmed',Rules\Password::defaults()]
         ]);
 
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        
+
+        try{
+        // ShopとOwner情報の登録
+            DB::transaction(function()use($request){
+                $owner = Owner::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+
+            Shop::create([
+                'owner_id' => $owner->id,
+                'name'     => '店名を入力してください',
+                'information' => '',
+                'filename' => '',
+                'is_selling' => true,
+            ]);
+            }, 2);
+
+        }catch(Throwable $e){
+        // Logとthrowを使用するために、 use文にて記載を行う
+        // また、errorが発生しような箇所では Logを登録しトレースできるようにしておく
+            Log::error($e);
+            throw $e;
+        }
+
 
         return redirect()
         ->route('admin.owners.index')
