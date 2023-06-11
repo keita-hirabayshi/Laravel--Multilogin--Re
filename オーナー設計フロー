@@ -4,4 +4,6 @@
     $this->hasOne() or  $this->belongTo で結合させる
 データの削除(FK付)
     外部キー制約がある場合は、migrationファイルにて「cascade」処理を実行する必要がある
-    トラブル発生中
+    トラブル
+    ・ownerとadminファイル上でアクセスパスごとに表示画面を切り替えられるようになった。adminベースでowner-navigation.php を編集
+    ・画像編集ソフト「intervention」をインストールできない
