@@ -8,3 +8,5 @@
     ・ownerとadminファイル上でアクセスパスごとに表示画面を切り替えられるようになった。adminベースでowner-navigation.php を編集
     ・画像編集ソフト「intervention」をインストールできない
     ・そもそものコネクションが切断されて、何もできなくなった  →  docker-compose.ymlの設定がおかしくなっていた。前のブランチに残っていたものをコピーペーストで上書き
+カテゴリー要素の作成
+　　・modelとseeder追加
