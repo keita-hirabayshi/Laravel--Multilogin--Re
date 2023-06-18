@@ -8,5 +8,13 @@
     ・ownerとadminファイル上でアクセスパスごとに表示画面を切り替えられるようになった。adminベースでowner-navigation.php を編集
     ・画像編集ソフト「intervention」をインストールできない
     ・そもそものコネクションが切断されて、何もできなくなった  →  docker-compose.ymlの設定がおかしくなっていた。前のブランチに残っていたものをコピーペーストで上書き
+
+intervention image
+    再度「sail composer require intervention/image」を実行すると、インストール完了
+    画像の保存と保存機能の切り離し(App/Service)に成功
+Shop updateページ
+    画像管理のアイコン作成、一覧画面の表示
+
+    
 カテゴリー要素の作成
-　　・modelとseeder追加
+    ・modelとseeder追加。複数画像の追加、編集
