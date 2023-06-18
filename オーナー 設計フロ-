@@ -17,4 +17,4 @@ Shop updateページ
 
     
 カテゴリー要素の作成
-    ・modelとseeder追加。複数画像の登録
+    ・modelとseeder追加。複数画像の追加、編集
