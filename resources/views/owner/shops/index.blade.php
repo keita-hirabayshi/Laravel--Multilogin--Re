@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <x-flash-message status="session('status')" />
                     @foreach($shops as $shop)
                     <div class="w-1/2  ">
                         <a href="{{ route('owner.shops.edit',['shop' => $shop->id ]); }}">
@@ -20,18 +21,9 @@
                                         <span class="border p-2 rounded-md bg-red-400 text-white">販売停止中</span>
                                     @endif
                                 </div>
-                                <div class="text-xl">
-                                    {{$shop->name}}
-                                </div>
-                                <div>
-                                    @if(empty($shop->filename))
-                                        <img src="{{ asset('images/no_image.jpg') }}" >
-                                    @else
-                                        <img src="{{ asset('images/shops/' . $shop->filename) }}" >
-                                    @endif
-                                </div>
+                                <div class="text-xl">{{$shop->name}}</div>
+                                <x-shop-thumbnail :filename="$shop->filename" />
                                     
-
                             </div>
                             
                         </a>
