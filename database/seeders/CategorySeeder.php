@@ -44,7 +44,7 @@ class CategorySeeder extends Seeder
                 'name' => 'HIS',
                 'sort_order' => 3,
                 'primary_category_id' =>3
-            ]
+            ],
             [
                 'name' => 'サングラス',
                 'sort_order' => 4,
