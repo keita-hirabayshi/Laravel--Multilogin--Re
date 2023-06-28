@@ -25,4 +25,4 @@ Shop updateページ
 
     product,stock のリレーション設定
 　　 jsの導入(micromodan)
-    editページ作成、データの紐付け
+    editページ作成、データの紐付け、バリデーションの追加
