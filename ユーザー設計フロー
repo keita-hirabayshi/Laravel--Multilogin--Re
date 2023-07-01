@@ -1,0 +1,5 @@
+userホーム画面の作成
+販売対象の商品の表示
+    条件
+    ・在庫が1以上
+    ・product,shopにおいて、is_sellingがtureになっている
