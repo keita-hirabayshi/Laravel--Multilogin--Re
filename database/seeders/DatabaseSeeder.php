@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             // ProductSeeder::class,
             // StockSeeder::class
+            UserSeeder::class
         ]);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
