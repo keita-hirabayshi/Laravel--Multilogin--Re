@@ -3,3 +3,6 @@ userホーム画面の作成
     条件
     ・在庫が1以上
     ・product,shopにおいて、is_sellingがtureになっている
+
+レイアウトの設定(swiper.js)
+    商品をスクロール形式で表示できたりする
