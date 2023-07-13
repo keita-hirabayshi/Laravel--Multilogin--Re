@@ -55,54 +55,105 @@ class CartController extends Controller
         return redirect()->route('user.cart.index');
     }
 
-    public function checkout(){
-        $user = User::findOrFail(Auth::id());
-        $products = $user->products;
+    // public function checkout(){
+    //     $user = User::findOrFail(Auth::id());
+    //     $products = $user->products;
 
         
-        $lineItems = [];
+    //     $lineItems = [];
 
-        foreach ($products as $product) {
+    //     foreach ($products as $product) {
+    //         $quantity = '';
+    //         $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+
+    //         if($product->pivot->quantit > $quantity){
+    //         // 在庫よりカート内の数の方が多い場合には、、リダイレクトする
+    //             return redirect()->route('user.cart.index');
+    //         }else{
+    //             $lineItem = [
+    //                 'name' => $product->name,
+    //                 'description' => $product->information,
+    //                 'amount' => $product->price,
+    //                 'currency' => 'jpy',
+    //                 'quantity' => $product->pivot->quantity
+    //             ];
+    //             array_push($lineItems,$lineItem);
+    //         }
+    //     }
+
+    //     foreach ($products as $product) {
+    //         Stock::create([
+    //             'product_id' => $product->id,
+    //             'type'     => \Constant::PRODUCT_LIST['reduce'],
+    //             'quantity' => $product->pivot->quantity * -1
+    //         ]);
+    //     }
+
+    //     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+    //     $session = \Stripe\Checkout\Session::create([
+    //         'payment_method_types' => ['cart'],
+    //         'line_items' => [$lineItems],
+    //         'mode' => 'payment',
+    //         'success_url' => route('user.items.index'),
+    //         'cancel_url' =>route('user.cart.index'),
+    //     ]);
+
+    //     $publicKey = env('STRIPE_PUBLIC_KEY');
+
+    //     return view('user.checkout',
+    //     compact('session','publicKey'));
+    // }
+
+    public function checkout()
+    {
+        $user = User::findOrFail(Auth::id());
+        $products = $user->products;
+        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
+ 
+        $lineItems = [];
+        foreach($products as $product) {
             $quantity = '';
             $quantity = Stock::where('product_id', $product->id)->sum('quantity');
-
-            if($product->pivot->quantit > $quantity){
-            // 在庫よりカート内の数の方が多い場合には、、リダイレクトする
+ 
+            if($product->pivot->quantity > $quantity){
                 return redirect()->route('user.cart.index');
-            }else{
-                $lineItem = [
+            } else {
+                $stripe_products = $stripe->products->create([
                     'name' => $product->name,
                     'description' => $product->information,
-                    'amount' => $product->price,
+                ]);
+                $stripe_price = $stripe->prices->create([
+                    'product' => $stripe_products,
+                    'unit_amount' => $product->price,
                     'currency' => 'jpy',
-                    'quantity' => $product->pivot->quantity
+                ]);
+                $lineItem = [
+                    'price' => $stripe_price,
+                    'quantity' => $product->pivot->quantity,
                 ];
-                array_push($lineItems,$lineItem);
+                array_push($lineItems, $lineItem);
             }
         }
-
-        foreach ($products as $product) {
+        // dd($lineItems);
+        // ストライプに渡す前に在庫を減らす
+        foreach($products as $product){
             Stock::create([
                 'product_id' => $product->id,
-                'type'     => \Constant::PRODUCT_LIST['reduce'],
-                'quantity' => $product->pivot->quantity * -1
+                'type' => \Constant::PRODUCT_LIST['reduce'],
+                'quantity' => $product->pivot->quantity * -1,
             ]);
         }
-
-        dd('test');
-        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-
-        $session = \Stripe\Checkout\Session::create([
-            'payment_method' => ['cart'],
+ 
+        $session = $stripe->checkout->sessions->create([
             'line_items' => [$lineItems],
             'mode' => 'payment',
             'success_url' => route('user.items.index'),
-            'cancel_url' =>route('user.cart.index'),
+            'cancel_url' => route('user.cart.index'),
         ]);
-
+ 
         $publicKey = env('STRIPE_PUBLIC_KEY');
-
-        return view('user.checkout',
-        compact('session','publicKey'));
+ 
+        return view('user.checkout', compact('session', 'publicKey'));
     }
 }
