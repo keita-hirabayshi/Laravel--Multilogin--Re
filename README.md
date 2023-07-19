@@ -29,6 +29,7 @@ DB_USERNAME=umarche
 DB_PASSWORD=password123
 XAMPP/MAMPまたは他の開発環境でDBを起動した後に
 
+
 php artisan migrate:fresh --seed
 
 と実行してください。(データベーステーブルとダミーデータが追加されればOK)
