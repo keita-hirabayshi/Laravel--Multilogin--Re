@@ -8,7 +8,8 @@
     stripe.redirectToCheckout({
     sessionId: '{{ $session->id }}'
     }).then(function (result) {
-    window.location.href = '{{ route('user.cart.index') }}';
+    // もしエラーが発生した場合には、cancel処理を行う
+    window.location.href = '{{ route('user.cart.cancel') }}';
     });
     }
 </script>
