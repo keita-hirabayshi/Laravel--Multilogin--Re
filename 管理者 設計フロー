@@ -1,0 +1,40 @@
+プログラミング（用件定義から基本設計までの流れ）
+
+企画ー用件定義ー設計ー実装ーテストーリリース
+
+上流工程 5割
+
+基本設計
+    画面設計(UI設計)  今回はtailblockのテンプレで作成
+機能設計
+テープル設計
+
+
+アプリ名
+.envファイルのAPP_NAMEにて登録。参照時は config/app.phpファイルから
+ロゴ
+・保存箇所は strage/public フォルダ(ただし、「sail artisan storage:link を実行し、外側からアクセスできるようにする必要がある」)
+   public/images/logo.png → 正常に保存      storage/public/logo.png → gitHugに保存されない
+シーダー(ダミーデータ)
+    seederファイルを作成する(sail artisan make:seeder)
+    ファイル内でDB,HASHをuseで読み込み、ダミーデータを入力(作成したシーダーファイル内)
+    DatabaseSeeder.phpで追加したseederを読み込む
+    refreshコマンドと組み合わせてテーブルデータを削除しつつ、登録することも可能(php artisan migrate:fresh --seed)
+データの扱い方
+    クエリービルダ・(ownercontroller)
+Carbon
+    日付関連の表示など(ownercontroller)
+
+    tailblocks(取得したデータをきれいに整える)
+        一覧画面、create画面の作成
+バリデーションの設定
+ソフトデリート
+    PCの「ゴミ箱」のようなもので、復元可能
+    migration,model,modelのクラス内で設定する必要がある
+ページネーション    
+    controller,view
+フラッシュメッセージ
+レスポンシブデザイン
+
+保留
+5-61 フラッシュメッセージが表示されない

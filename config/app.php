@@ -15,7 +15,10 @@ return [
     |
     */
 
+//  アプリケーション名を参照している。
+// 第一引数で、 .env ファイルのAPP_NAMEを参照し、空の場合は第二引数を名前として採用する
     'name' => env('APP_NAME', 'Laravel'),
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -108,7 +111,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'ja_JP',
 
     /*
     |--------------------------------------------------------------------------
@@ -184,6 +187,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -211,6 +215,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'InterventionImage' => Intervention\Image\Facades\Image::class,
+        'Constant' => App\Constants\Common::class
     ])->toArray(),
 
 ];
