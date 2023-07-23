@@ -1,0 +1,30 @@
+外部キー制約
+    migrationファイルの作成、seederの作成、DatabaseSeederへの登録
+リレーションの設定
+    $this->hasOne() or  $this->belongTo で結合させる
+データの削除(FK付)
+    外部キー制約がある場合は、migrationファイルにて「cascade」処理を実行する必要がある
+    トラブル
+    ・ownerとadminファイル上でアクセスパスごとに表示画面を切り替えられるようになった。adminベースでowner-navigation.php を編集
+    ・画像編集ソフト「intervention」をインストールできない
+    ・そもそものコネクションが切断されて、何もできなくなった  →  docker-compose.ymlの設定がおかしくなっていた。前のブランチに残っていたものをコピーペーストで上書き
+
+intervention image
+    再度「sail composer require intervention/image」を実行すると、インストール完了
+    画像の保存と保存機能の切り離し(App/Service)に成功
+Shop updateページ
+    画像管理のアイコン作成、一覧画面の表示
+
+    
+カテゴリー要素の作成
+    ・modelとseeder追加。複数画像の追加、編集
+プロダクト要素の作成
+    ・外部キー制約の設定、ダミーデータの追加
+    リレーションの設定
+    eager loading
+
+product,stock のリレーション設定
+    jsの導入(micromodan)
+    editページ作成、データの紐付け、バリデーションの追加(楽観視的ロック：update時に在庫数に変更が見られる場合はeditページへリダイレクト処理する)
+    imageを使用しているproductの削除方法(外部キー制約がかかっている状態)
+終了
