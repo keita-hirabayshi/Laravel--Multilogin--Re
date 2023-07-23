@@ -86,4 +86,24 @@ class Product extends Model
             ,'products.information', 'secondary_categories.name as category'
             ,'image1.filename as filename');
     }
+
+    public function scopeSortOrder($query, $sortOrder){
+
+        // 共通の内容はcommon.phpにて定数として定義し、リクエストの種類に応じて、データの取得順番を変更している
+        if($sortOrder === null || $sortOrder === \Constant::SORT_ORDER['recommend']){
+            return $query->orderBy('sort_order', 'asc') ;
+            }
+            if($sortOrder === \Constant::SORT_ORDER['higherPrice']){
+            return $query->orderBy('price', 'desc') ;
+            }
+            if($sortOrder === \Constant::SORT_ORDER['lowerPrice']){
+            return $query->orderBy('price', 'asc') ;
+            }
+            if($sortOrder === \Constant::SORT_ORDER['later']){
+            return $query->orderBy('products.created_at', 'desc') ;
+            }
+            if($sortOrder === \Constant::SORT_ORDER['older']){
+            return $query->orderBy('products.created_at', 'asc') ;
+            }
+    }
 }
