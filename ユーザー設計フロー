@@ -18,4 +18,6 @@ userホーム画面の作成
 商品の表示順
     ECサイトに必須の機能
     取得順と表示件数を指定(sort,pagination)
-    追加
+    カテゴリー指定による検索
+メール
+    .envにて設定を登録したら、sail artisan config cache にて内容をキャッシュしてあげる
