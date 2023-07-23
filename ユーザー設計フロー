@@ -21,3 +21,9 @@ userホーム画面の作成
     カテゴリー指定による検索
 メール
     .envにて設定を登録したら、sail artisan config cache にて内容をキャッシュしてあげる
+    メールの送信
+非同期処理
+    メール送信には時間がかかる
+   → 画面上は更新しつつ、裏側で送信処理
+   confg/queueの設定変更  →  処理内容をdatabaseに格納するように変更(jobをqueueに格納)
+   最後に、workerを起動 sail artisan queue:work  (jobの処理を実行)  → 起動し続けないと、処理し続けられない
