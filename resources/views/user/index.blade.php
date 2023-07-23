@@ -9,6 +9,7 @@
                     <div class="flex">
                         <div>
                             <span class="text-sm">表示順</span><br>
+                        <!-- idはjavascrip処理を行う際に必要となる -->
                             <select id="sort" name="sort" class="mr-4">
                                <option value="{{ \Constant::SORT_ORDER['recommend']}}"
                                 @if(\Request::get('sort') === \Constant::SORT_ORDER['recommend'] )
@@ -37,7 +38,27 @@
                                 </option> 
                             </select>
                         </div>
-                        <div>表示件数</div>
+                        <div>
+                            <span class="text-sm">表示件数</span><br>
+                            <select id="pagination" name="pagination">
+                                <option value="20"
+                                @if(\Request::get('pagination') === '20')
+                                selected
+                                @endif>20件
+                                </option>
+                                <option value="50"
+                                @if(\Request::get('pagination') === '50')
+                                selected
+                                @endif>50件
+                                </option>
+                                <option value="100"
+                                @if(\Request::get('pagination') === '100')
+                                selected
+                                @endif>100件
+                                </option>
+                                
+                            </select>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -49,8 +70,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                <div class="flex flex-wrap">
-                            @foreach($products as $product)
+                   <div class="flex flex-wrap">
+                        @foreach($products as $product)
                         <div class="w-1/4  p-2 md:p-4">
                             <a href="{{ route('user.items.show', ['item' => $product->id]) }}">
                                 <div class="border rounded-md p-2 md:p-4">
@@ -65,15 +86,25 @@
                                 </div>
                             </a>
                         </div>
-                            @endforeach
+                        @endforeach
                     </div>
+                <!-- appendメソッドを使用することで、指定の値を引き継げる -->
+                    {{ $products->appends([
+                        'sort' => \Request::get('sort'),
+                        'pagination' => \Request::get('pagination')
+                        ])->links() }}
                 </div>
             </div>
         </div>
     </div>
+    <!-- <-- idが変更されたら、formを送信する --> 
     <script>
         const select = document.getElementById('sort')
         select.addEventListener('change', function(){
+        this.form.submit()
+        })
+        const paginate = document.getElementById('pagination')
+        paginate.addEventListener('change', function(){
         this.form.submit()
         })
     </script>

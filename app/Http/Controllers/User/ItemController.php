@@ -32,7 +32,7 @@ class ItemController extends Controller
     // 在庫が最低1つはあるものを取得している
         $products = Product::availableItems()
         ->sortOrder($request->sort)
-        ->get();
+        ->paginate($request->pagination);
   
         return view('user.index',compact('products'));
     }
