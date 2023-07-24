@@ -9,28 +9,28 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ThanksMail;
+use App\Mail\OrderedMail;
 
-class SendThanksMail implements ShouldQueue
+class SendOrderedMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $products;
+    public $product;
     public $user;
 
-    // public function __construct($products,$user)
-    // {
-    //     $this->products = $products;
-    //     $this->user = $user;
-    // }
+    public function __construct($product,$user)
+    {
+        $this->product = $product;
+        $this->user = $user;
+
+    }
 
     /**
      * Execute the job.
      */
     public function handle()
     {
-        // Mail::to('test@example.com')->send(new TestMail());
-        Mail::to($this->user)
-        ->send(new ThanksMail($this->products,$this->user));
+        Mail::to($this->product['email'])
+        ->send(new OrderedMail($this->product,$this->user));
     }
 }

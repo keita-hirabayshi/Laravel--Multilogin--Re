@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use App\Services\CartService;
+use App\Jobs\SendThanksMail;
+use App\Jobs\SendOrderedMail;
 
 class CartController extends Controller
 {
@@ -56,63 +58,27 @@ class CartController extends Controller
         return redirect()->route('user.cart.index');
     }
 
-    // public function checkout(){
-    //     $user = User::findOrFail(Auth::id());
-    //     $products = $user->products;
-
-        
-    //     $lineItems = [];
-
-    //     foreach ($products as $product) {
-    //         $quantity = '';
-    //         $quantity = Stock::where('product_id', $product->id)->sum('quantity');
-
-    //         if($product->pivot->quantit > $quantity){
-    //         // 在庫よりカート内の数の方が多い場合には、、リダイレクトする
-    //             return redirect()->route('user.cart.index');
-    //         }else{
-    //             $lineItem = [
-    //                 'name' => $product->name,
-    //                 'description' => $product->information,
-    //                 'amount' => $product->price,
-    //                 'currency' => 'jpy',
-    //                 'quantity' => $product->pivot->quantity
-    //             ];
-    //             array_push($lineItems,$lineItem);
-    //         }
-    //     }
-
-    //     foreach ($products as $product) {
-    //         Stock::create([
-    //             'product_id' => $product->id,
-    //             'type'     => \Constant::PRODUCT_LIST['reduce'],
-    //             'quantity' => $product->pivot->quantity * -1
-    //         ]);
-    //     }
-
-    //     \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-
-    //     $session = \Stripe\Checkout\Session::create([
-    //         'payment_method_types' => ['cart'],
-    //         'line_items' => [$lineItems],
-    //         'mode' => 'payment',
-    //         'success_url' => route('user.items.index'),
-    //         'cancel_url' =>route('user.cart.index'),
-    //     ]);
-
-    //     $publicKey = env('STRIPE_PUBLIC_KEY');
-
-    //     return view('user.checkout',
-    //     compact('session','publicKey'));
-    // }
+  
 
     public function checkout()
     {
         ////
-    // ログインしているユーザーのカート情報を取得
+        // ログインしているユーザーのカート情報を取得
         $items = Cart::where('user_id',Auth::id())->get();
         $products = CartService::getItemsInCart($items);
-        ////
+        $user = User::findOrFail(Auth::id());
+        // if(!empty()){
+        //     SendThanksMail::dispatch($products,$user);
+        //     dd('ユーザーメール送信テスト');
+
+        // }
+
+
+        foreach($products as $product){
+            SendOrderedMail::dispatch($product,$user);
+        }
+        //
+
         $user = User::findOrFail(Auth::id());
         $products = $user->products;
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
@@ -164,6 +130,19 @@ class CartController extends Controller
     }
 
     public function success(){
+           ////
+        // ログインしているユーザーのカート情報を取得
+        $items = Cart::where('user_id',Auth::id())->get();
+        $products = CartService::getItemsInCart($items);
+        $user = User::findOrFail(Auth::id());
+        // dd($user);
+        SendThanksMail::dispatch($products,$user);
+
+        foreach($products as $product){
+            SendOrderedMail::dispatch($product,$user);
+        }
+        ////
+
         Cart::where('user_id',Auth::id())->delete();
 
         return redirect()->route('user.items.index');

@@ -27,3 +27,5 @@ userホーム画面の作成
    → 画面上は更新しつつ、裏側で送信処理
    confg/queueの設定変更  →  処理内容をdatabaseに格納するように変更(jobをqueueに格納)
    最後に、workerを起動 sail artisan queue:work  (jobの処理を実行)  → 起動し続けないと、処理し続けられない
+
+   $product[name]と$product->nameの違いは？
